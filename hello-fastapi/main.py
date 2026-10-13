@@ -16,3 +16,8 @@ def login_handler():    # 요청을 처리하는 함수 정의
 @app.get("/users/{user_id}") # 엔드포인트
 def user_handler(user_id: int):
     return {"user_id": user_id, "message": f"사용자 {user_id} 정보 조회"}
+
+# 쿼리 파라미터 사용
+@app.get("/items")
+def read_items_handler(max_price: int):
+    return {"max_price": max_price}
