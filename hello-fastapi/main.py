@@ -19,5 +19,5 @@ def user_handler(user_id: int):
 
 # 쿼리 파라미터 사용
 @app.get("/items")
-def read_items_handler(max_price: int):
+def read_items_handler(max_price: int | None = None):
     return {"max_price": max_price}
