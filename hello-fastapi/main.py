@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, status     # status 모듈 임포트
 from pydantic import BaseModel
 app = FastAPI()
 
@@ -29,7 +29,9 @@ class Item(BaseModel): # 요청 본문 검증을 위한 Item 모델 정의
     in_stock: bool = True
 
 # 새 아이템 등록
-@app.post("/items", response_model=Item) # 응답 데이터를 Item 모델로 지정
+@app.post("/items",
+          response_model=Item,                  # 응답 데이터를 Item 모델로 지정
+          status_code=status.HTTP_201_CREATED)  # 성공 시 반환할 상태 코드 지정
 def create_item_handler(item: Item):
     return item # Item 객체를 그대로 반환
 
