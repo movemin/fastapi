@@ -29,9 +29,9 @@ class Item(BaseModel): # 요청 본문 검증을 위한 Item 모델 정의
     in_stock: bool = True
 
 # 새 아이템 등록
-@app.post("/items")     # POST 요청과 경로 매핑 설정
-def create_item_handler(item: Item): # 요청 본문 데이터를 Item 객체로 변환
-    return {"message": f"아이텝 '{item.name}'이(가) 추가되었습니다.", "item": item}
+@app.post("/items", response_model=Item) # 응답 데이터를 Item 모델로 지정
+def create_item_handler(item: Item):
+    return item # Item 객체를 그대로 반환
 
 # 경로 변수, 쿼리 파라미터, 요청 본문 혼합 사용
 @app.put("/items/{item_id}")
