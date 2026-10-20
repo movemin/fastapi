@@ -13,8 +13,8 @@ todos = [
 @app.get("/todos/{todo_id}",
          response_model=TodoResponse,
          status_code=status.HTTP_200_OK)
-
 def get_todo_handler(todo_id: int):
+    
     # 1. todos 목록에서 todo_id가 일치하는 항목 검색
     for todo in todos:
         if todo["id"] == todo_id:
