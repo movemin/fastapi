@@ -1,5 +1,5 @@
 from schema.response import TodoResponse  # 응답 모델 임포트
-from schema.request import TodoCreateRequest  # 생성 요청 모델 임포트
+from schema.request import TodoCreateRequest, TodoUpdateRequest  # 생성 요청 모델 임포트
 from fastapi import FastAPI, status, HTTPException
 
 app = FastAPI()
@@ -43,3 +43,18 @@ def create_todos_handler(body: TodoCreateRequest):     # 요청 본문을 매개
     }
     todos.append(new_todo)          # 리스트에 새 할 일 추가 후 응답 반환
     return new_todo
+
+# 할 일 수정
+@app.patch( "/todos/{todo_id}",
+            response_model=TodoResponse,
+            status_code=status.HTTP_200_OK
+)
+def update_todos_handler(todo_id: int, body: TodoUpdateRequest):
+    for todo in todos:                              # 수정 대상 데이터 탐색
+        if todo["id"] == todo_id:
+            if body.title is not None:              # title 필드 조건부 수정
+                todo["title"] = body.title
+            if body.is_done is not None:            # is_done 필드 조건부 수정
+                todo["is_done"] = body.is_done
+            return todo                             # 수정된 데이터 반환
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Todo not found")  # 예외 처리
