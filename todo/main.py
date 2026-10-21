@@ -1,5 +1,5 @@
 from schema.response import TodoResponse  # 응답 모델 임포트
-from fastapi import FastAPI, status
+from fastapi import FastAPI, status, HTTPException
 
 app = FastAPI()
 
@@ -16,3 +16,15 @@ todos = [       # 임시 데이터 저장 -> 실제는 데이터 베이스에다
          status_code=status.HTTP_200_OK)
 def get_todos_handler():
     return todos
+
+# 단일 할 일 조회
+@app.get(       # 경로 변수를 사용하는 GET API 정의
+    "/todos/{todo_id}",
+    response_model=TodoResponse,
+    status_code=status.HTTP_200_OK
+)
+def get_todo_handler(todo_id: int):
+    for todo in todos:  # 단일 데이터 탐색
+        if todo["id"] == todo_id:
+            return todo
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Todo not found")
