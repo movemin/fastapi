@@ -58,3 +58,13 @@ def update_todos_handler(todo_id: int, body: TodoUpdateRequest):
                 todo["is_done"] = body.is_done
             return todo                             # 수정된 데이터 반환
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Todo not found")  # 예외 처리
+
+@app.delete("/todos/{todo_id}",
+            status_code=status.HTTP_204_NO_CONTENT
+)
+def delete_todos_handler(todo_id: int):
+    for todo in todos:              # 삭제 대상 데이터 탐색
+        if todo["id"] == todo_id:
+            todos.remove(todo)      # 데이터 삭제
+            return                  # 응답 본문 없이 함수 종료
+    raise HTTPException(status_code=status.HTTP_404_BAD_REQUEST, detail="Todo not found")
