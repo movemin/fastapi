@@ -1,4 +1,5 @@
 from schema.response import TodoResponse  # 응답 모델 임포트
+from schema.request import TodoCreateRequest  # 생성 요청 모델 임포트
 from fastapi import FastAPI, status, HTTPException
 
 app = FastAPI()
@@ -28,3 +29,17 @@ def get_todo_handler(todo_id: int):
         if todo["id"] == todo_id:
             return todo
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Todo not found")
+
+@app.post(       # 경로 변수를 사용하는 GET API 정의
+    "/todos",
+    response_model=TodoResponse,
+    status_code=status.HTTP_201_CREATED
+)
+def create_todos_handler(body: TodoCreateRequest):     # 요청 본문을 매개변수로 받기
+    new_todo = {                    # 새 할 일 데이터 생성
+        "id": len(todos) + 1,       # id 값 생성
+        "title": body.title,
+        "is_done": body.is_done
+    }
+    todos.append(new_todo)          # 리스트에 새 할 일 추가 후 응답 반환
+    return new_todo
