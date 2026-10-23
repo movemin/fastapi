@@ -19,3 +19,7 @@ build/
 # 환경 설정
 .env
 .env.local
+
+# 테스트 코드
+test/
+test.py
