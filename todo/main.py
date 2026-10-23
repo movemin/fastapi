@@ -1,6 +1,11 @@
 from schema.response import TodoResponse  # 응답 모델 임포트
 from schema.request import TodoCreateRequest, TodoUpdateRequest  # 생성 요청 모델 임포트
 from fastapi import FastAPI, status, HTTPException
+from database.db_connection import engine   # 데이터베이스 엔진 임포트
+from database.orm import Base               # ORM 기준 클래스 임포트
+from models import Todo                     # ORM 모델 임포트
+
+Base.metadata.create_all(bind=engine)       # 테이블 생성 지시
 
 app = FastAPI()
 
